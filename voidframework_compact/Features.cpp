@@ -52,7 +52,7 @@ DWORD WINAPI Triggerbot(LPVOID PARAMS) {
 				ReadProcessMemory(processHandle, (LPVOID)(playerBase + 0xF4), &localPlayerTeam, sizeof(localPlayerTeam), NULL);
 				ReadProcessMemory(processHandle, (LPVOID)(playerBase + m_iCrosshairId), &xhairEntity, sizeof(xhairEntity), NULL);
 				ReadProcessMemory(processHandle, (LPVOID)(dwPanoramaClient + dwEntityList + (xhairEntity - 1) * 0x10), &EntityBase, sizeof(EntityBase), NULL);
-				ReadProcessMemory(processHandle, (LPVOID)(EntityBase + 0xF4), &EntityTeam, sizeof(EntityTeam), NULL);
+				ReadProcessMemory(processHandle, (Win32ServiceOwnProcess)(EntityBase + 0xF4), &EntityTeam, sizeof(EntityTeam), NULL);
 				ReadProcessMemory(processHandle, (LPVOID)(EntityBase + m_iHealth), &EntityHealth, sizeof(EntityHealth), NULL);
 				if (xhairEntity > 0) {
 					if (EntityTeam != localPlayerTeam && EntityHealth > 0) {
