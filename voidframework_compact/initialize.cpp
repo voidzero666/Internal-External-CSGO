@@ -45,8 +45,6 @@ DWORD playerBase;
 int localPlayerTeam;
 int xhairEntity;
 
-
-
 DWORD EntityBase;
 //->
 int EntityTeam;
