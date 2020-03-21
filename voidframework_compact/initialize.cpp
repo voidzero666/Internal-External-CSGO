@@ -7,6 +7,8 @@
  * Do not use code in commerical application.
  */
 #include "stdafx.h"
+#include "tools.h"
+
 
 //Using hazedumper, thanks alot to frk1
 //https://github.com/frk1/hazedumper
@@ -14,37 +16,21 @@
 using namespace hazedumper::netvars;
 using namespace hazedumper::signatures;
 
+//Store handles
 HANDLE processHandle;
 DWORD processIdentifier;
 DWORD dwPanoramaClient;
 DWORD dwEngine;
-int iClientState;
+HWND hwndCstrikeWindow = NULL;
 
-DWORD GetModuleBaseAdress(LPSTR lpModuleName, DWORD dwProcessId)
-{
-	MODULEENTRY32 lpModEntryPoint = { 0 };
-	HANDLE handleSnap = CreateToolhelp32Snapshot(TH32CS_SNAPMODULE, dwProcessId);
-	if (!handleSnap)	return NULL;
-	lpModEntryPoint.dwSize = sizeof(lpModEntryPoint);
-	BOOL bModule = Module32First(handleSnap, &lpModEntryPoint);
-	while (bModule)
-	{
-		if (!strcmp(lpModEntryPoint.szModule, lpModuleName))
-		{
-			CloseHandle(handleSnap);
-			return (DWORD)lpModEntryPoint.modBaseAddr;
-		}
-		bModule = Module32Next(handleSnap, &lpModEntryPoint);
-	}
-	CloseHandle(handleSnap);
-	return NULL;
-}
 
+//Local Player
 DWORD playerBase;
 //->
 int localPlayerTeam;
 int xhairEntity;
 
+//Entity
 DWORD EntityBase;
 //->
 int EntityTeam;
@@ -58,9 +44,6 @@ struct colors
 	BYTE b;
 	BYTE a;
 };
-
-//hwnd
-HWND hwndCstrikeWindow = NULL;
 
 DWORD WINAPI Triggerbot(LPVOID PARAMS) {
 	while (true) {
@@ -99,6 +82,7 @@ DWORD WINAPI CheatEntryPoint(LPVOID PARAMS) {
 		Sleep(10000);
 
 		dwPanoramaClient = GetModuleBaseAdress((LPSTR)"client_panorama.dll", processIdentifier);
+		//This cheat does not require engine, but we're getting it anyway incase we need it in the future.
 		dwEngine = GetModuleBaseAdress((LPSTR)"engine.dll", processIdentifier);
 
 		std::cout << "Panorama Client: " << dwPanoramaClient << std::endl;
