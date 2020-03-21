@@ -21,13 +21,13 @@
     <ClInclude Include="targetver.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="initialize.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="hazedumper.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="tools.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Features.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -41,7 +41,7 @@
     <ClCompile Include="dllmain.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="initialize.cpp">
+    <ClCompile Include="Features.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
