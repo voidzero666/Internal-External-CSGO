@@ -1,4 +1,4 @@
 #pragma once
 #include "stdafx.h"
 
-DWORD WINAPI entry(LPVOID PARAMS);
+DWORD WINAPI CheatEntryPoint(LPVOID PARAMS);

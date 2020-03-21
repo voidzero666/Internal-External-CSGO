@@ -20,7 +20,7 @@ BOOL APIENTRY DllMain(HMODULE hMOD, DWORD  ul_reason_for_call, LPVOID lpReserved
 		freopen("conin$", "r+t", stdin);
 		freopen("conout$", "w+t", stdout);
 		freopen("conout$", "w+t", stderr);
-		CreateThread(0, 0, &entry, 0, 0, 0);
+		CreateThread(0, 0, &CheatEntryPoint, 0, 0, 0);
 	};
 	}
 	return TRUE;

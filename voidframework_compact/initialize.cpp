@@ -17,7 +17,7 @@ using namespace hazedumper::signatures;
 
 HANDLE procHandle;
 DWORD procId;
-DWORD dwClient;
+DWORD dwPanoramaClient;
 DWORD dwEngine;
 int iClientState;
 
@@ -40,39 +40,30 @@ DWORD GetModuleBaseAdress(LPSTR lpModuleName, DWORD dwProcessId)
 	CloseHandle(handleSnap);
 	return NULL;
 }
-
-int GLent;
-int GLcent;
-int GLcpg;
-DWORD GLPOINTR;
-DWORD PlayerBase;
+DWORD playerBase;
 int hp;
 int m_flags;
 int teamnum;
-int GLteamnum;
-bool GLdormant;
+int gEntTeam;
+bool gEntDormant;
 
-
-bool t = true;
-bool f = false;
-
-int entCID;
-DWORD entityp;
-int entteamnum;
-int enthp;
+int xhairEntity;
+DWORD EntityBase;
+int EntityTeam;
+int EntityHealth;
 
 DWORD WINAPI Triggerbot(LPVOID PARAMS) {
 	while (true) {
 		
 			while (GetAsyncKeyState(0x5)) {
-				ReadProcessMemory(procHandle, (LPVOID)(dwClient + dwLocalPlayer), &PlayerBase, sizeof(PlayerBase), NULL);
-				ReadProcessMemory(procHandle, (LPVOID)(PlayerBase + 0xF4), &teamnum, sizeof(teamnum), NULL);
-				ReadProcessMemory(procHandle, (LPVOID)(PlayerBase + m_iCrosshairId), &entCID, sizeof(entCID), NULL);
-				ReadProcessMemory(procHandle, (LPVOID)(dwClient + dwEntityList + (entCID - 1) * 0x10), &entityp, sizeof(entityp), NULL);
-				ReadProcessMemory(procHandle, (LPVOID)(entityp + 0xF4), &entteamnum, sizeof(entteamnum), NULL);
-				ReadProcessMemory(procHandle, (LPVOID)(entityp + m_iHealth), &enthp, sizeof(enthp), NULL);
-				if (entCID > 0) {
-					if (entteamnum != teamnum && enthp > 0) {
+				ReadProcessMemory(procHandle, (LPVOID)(dwPanoramaClient + dwLocalPlayer), &playerBase, sizeof(playerBase), NULL);
+				ReadProcessMemory(procHandle, (LPVOID)(playerBase + 0xF4), &teamnum, sizeof(teamnum), NULL);
+				ReadProcessMemory(procHandle, (LPVOID)(playerBase + m_iCrosshairId), &xhairEntity, sizeof(xhairEntity), NULL);
+				ReadProcessMemory(procHandle, (LPVOID)(dwPanoramaClient + dwEntityList + (xhairEntity - 1) * 0x10), &EntityBase, sizeof(EntityBase), NULL);
+				ReadProcessMemory(procHandle, (LPVOID)(EntityBase + 0xF4), &EntityTeam, sizeof(EntityTeam), NULL);
+				ReadProcessMemory(procHandle, (LPVOID)(EntityBase + m_iHealth), &EntityHealth, sizeof(EntityHealth), NULL);
+				if (xhairEntity > 0) {
+					if (EntityTeam != teamnum && EntityHealth > 0) {
 
 						mouse_event(MOUSEEVENTF_LEFTDOWN | MOUSEEVENTF_LEFTUP, NULL, NULL, NULL, NULL);
 					}
@@ -94,7 +85,7 @@ struct colors
 };
 
 
-DWORD WINAPI entry(LPVOID PARAMS) {
+DWORD WINAPI CheatEntryPoint(LPVOID PARAMS) {
 
 		std::cout << "VoidFramework by Void-Development\n";
 		std::cout << "www.github.com/voidzero-development\n";
@@ -112,10 +103,10 @@ DWORD WINAPI entry(LPVOID PARAMS) {
 
 		Sleep(10000);
 
-		dwClient = GetModuleBaseAdress((LPSTR)"client_panorama.dll", procId);
+		dwPanoramaClient = GetModuleBaseAdress((LPSTR)"client_panorama.dll", procId);
 		dwEngine = GetModuleBaseAdress((LPSTR)"engine.dll", procId);
 
-		std::cout << "Panorama Client: " << dwClient << std::endl;
+		std::cout << "Panorama Client: " << dwPanoramaClient << std::endl;
 		std::cout << "Engine: " << dwEngine << std::endl;
 	
 		CreateThread(0, 0, &Triggerbot, 0, 0, 0);
